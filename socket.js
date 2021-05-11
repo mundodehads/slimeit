@@ -21,6 +21,15 @@ app.post('/join', (req, res) => {
   res.send('a user has joined');
 });
 
+app.post('/chatBalloon', (req, res) => {
+  io.emit('chatBalloon', {
+    username: req.body.username,
+    message: req.body.message,
+  });
+
+  res.send('a user chat ballon has been created');
+});
+
 io.on('connection', (socket) => {
   console.log('a connection has been established');
   

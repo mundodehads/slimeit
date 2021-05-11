@@ -4,6 +4,11 @@ const tmi = require('tmi.js');
 const axios = require('axios').default;
 const Utils = require('./utils');
 
+const COMMANDS = {
+  '!join': join,
+  default: defaultCommand,
+};
+
 const SLIMES_CACHE = {};
 
 function defaultCommand() {
@@ -73,23 +78,32 @@ async function join({ context, client, target }) {
   SLIMES_CACHE[context.username] = true;
 }
 
-const COMMANDS = {
-  '!join': join,
-  default: defaultCommand,
-};
+async function chatBalloon({ context, message }) {
+  await axios.post('http://localhost:3000/chatBalloon', {
+    username: context.username,
+    message: message,
+  });
+}
 
-async function onMessageHandler(target, context, msg, self) {
+async function onMessageHandler(target, context, message, self) {
   if (self) { return; }
 
-  const commandName = msg.trim();
-
+  const messageSplited = message.split(' ');
+  
   try {
-    await (COMMANDS[commandName] || COMMANDS.default)({ client, target, context, msg, self });
+    if (messageSplited[0][0] === '!') {
+      await (COMMANDS[messageSplited[0]] || COMMANDS.default)({ client, target, context, message, self });
+      return;
+    }
+
+    if (SLIMES_CACHE[context.username]) {
+      await chatBalloon({ context, message });
+      return;
+    }
   } catch (error) {
     console.log(error);
+    return;
   }
-
-  return;
 }
 
 function onConnectedHandler(addr, port) {
