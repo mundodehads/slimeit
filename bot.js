@@ -71,7 +71,7 @@ async function join({ context, client, target }) {
   }
 
   await axios.post('http://localhost:3000/join', {
-    slimeData: slime.slimeData,
+    slimeData: slime.Item.slimeData,
     username: context.username,
   });
 

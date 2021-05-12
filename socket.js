@@ -5,6 +5,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const SLIMES_CACHE = [];
+
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -13,10 +15,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/join', (req, res) => {
-  io.emit('join', {
+  const slime = {
     slimeData: req.body.slimeData,
     username: req.body.username,
-  });
+  };
+
+  io.emit('join', slime);
+  SLIMES_CACHE.push(slime);
 
   res.send('a user has joined');
 });
@@ -32,6 +37,10 @@ app.post('/chatBalloon', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a connection has been established');
+
+  for(const slime of SLIMES_CACHE) {
+    io.emit('join', slime);
+  }
   
   socket.on('disconnect', () => {
     console.log('a connection has been lost');
