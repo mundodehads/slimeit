@@ -9,20 +9,27 @@ function clearSlimeBalloon(username, message) {
 socket.on('join', (slime) => {
   const game = document.getElementById('game');
 
-  game.innerHTML += `<div class="slime" id="${slime.username}"><h1>${slime.username}</h1></div>`;
+  // Not show balloon background, just when type message
+  game.innerHTML += `
+    <div class="slime" id="${slime.username}">
+      <div class="slime-balloon" id="${slime.username}-balloon"><p></p></div>
+      <img src="/images/slime_${slime.slimeData.race}.gif" alt="Slime">
+      <div class="slime-name"><p>${slime.username}</p></div>
+    </div>
+  `;
 
   BALLOONS[slime.username] = '';
 });
 
 socket.on('chatBalloon', (balloon) => {
-  const slime = document.getElementById(balloon.username);
-  slime.innerHTML = `<h1>${balloon.username}: ${balloon.message}</h1>`;
+  const slime = document.getElementById(`${balloon.username}-balloon`);
+  slime.innerHTML = `<p style="color:black;background-color:white;border-radius:20px;">${balloon.message}</p>`;
   BALLOONS[balloon.username] = balloon.message;
 
   setTimeout((username = balloon.username, message = balloon.message) => {
     if (BALLOONS[username] === message) {
-      const slime = document.getElementById(username);
-      slime.innerHTML = `<h1>${username}</h1>`;
+      const slime = document.getElementById(`${username}-balloon`);
+      slime.innerHTML = '<p></p>';
     }
   }, 4000);
 });

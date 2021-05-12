@@ -1,4 +1,38 @@
 body {
     background-color: #00ff00;
-    color: blue;
+    font-size: 24px;
 }
+
+body p {
+    margin: 0px;
+}
+
+.game {
+    display: flex;
+    justify-content: center;
+}
+
+.slime {
+    height: 128px;
+    width: 128px;
+    text-align: center;
+    margin-right: 32px;
+}
+
+.slime img {
+    height: 128px;
+    width: 128px;
+}
+
+.slime-balloon {
+    height: 24px;
+    width: 100%;
+    word-break: break-all;
+}
+
+.slime-name {
+    display: inline;
+    color: blue;
+    height: 24px;
+}
+
