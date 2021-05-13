@@ -84,7 +84,7 @@ function where({ context, target }) {
   client.say(target, `${context.username}, you are at ${SLIMES_CACHE[context.username].biome} biome!`);
 }
 
-function stats({ context, target }) {
+async function stats({ context, target }) {
   if (!SLIMES_CACHE[context.username]) {
     client.say(target, `${context.username}, to check your stats you have to join first!`);
     return;
