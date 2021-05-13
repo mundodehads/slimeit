@@ -5,6 +5,7 @@ const axios = require('axios').default;
 
 const COMMANDS = {
   '!join': join,
+  '!exit': exit, 
   default: defaultCommand,
 };
 
@@ -25,6 +26,19 @@ async function join({ context, client, target }) {
   });
 
   SLIMES_CACHE[context.username] = true;
+}
+
+async function exit({ context, target }) {
+  if (!SLIMES_CACHE[context.username]) {
+    client.say(target, `${context.username}, to leave you have to join first!`);
+    return;
+  }
+
+  await axios.post('http://localhost:3000/exit', {
+    username: context.username,
+  });
+
+  delete SLIMES_CACHE[context.username];
 }
 
 async function chatBalloon({ context, message }) {

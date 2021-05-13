@@ -3,13 +3,12 @@ const socket = io();
 const BALLOONS = {};
 
 function clearSlimeBalloon(username, message) {
-  
+
 }
 
 socket.on('join', (slime) => {
   const game = document.getElementById('game');
 
-  // Not show balloon background, just when type message
   game.innerHTML += `
     <div class="slime" id="${slime.username}">
       <div class="slime-balloon" id="${slime.username}-balloon"><p></p></div>
@@ -19,6 +18,13 @@ socket.on('join', (slime) => {
   `;
 
   BALLOONS[slime.username] = '';
+});
+
+socket.on('exit', (slime) => {
+  const userSlime = document.getElementById(slime.username);
+  userSlime.remove();
+
+  delete BALLOONS[slime.username];
 });
 
 socket.on('chatBalloon', (balloon) => {

@@ -5,6 +5,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
 const Utils = require('./utils');
+const Constants = require('./constants');
 
 const SLIMES_CACHE = [];
 
@@ -26,31 +27,26 @@ app.post('/join', async (req, res) => {
 
   let slime = await Utils.dynamoGet({
     TableName: 'Slimes',
-    Key: { username, accountNumber: 1 },
+    Key: { username, accountNumber: Constants.ACCOUNT_NUMBERS.default },
     AttributesToGet: ['slimeData', 'currentlyPlayingAt'],
     Select: 'SPECIFIC_ATTRIBUTES'
   });
 
   if (!slime.Item) {
-    const slimeData = {
-      race: 'normal',
-      experience: 0,
-      level: 0
-    };
-
     await Utils.dynamoUpdate({
       Key: { username, accountNumber: 1 },
       TableName: 'Slimes',
       ExpressionAttributeValues: {
         ':currentlyPlayingAt': process.env.CHANNEL_NAME,
-        ':slimeData': slimeData,
+        ':slimeData': Constants.SLIMES_DATA.default,
+        ':biome': Constants.BIOMES.default,
       },
       UpdateExpression: 'set currentlyPlayingAt = :currentlyPlayingAt, slimeData = :slimeData',
     });
 
     slime = {
       Item: {
-        slimeData,
+        slimeData: Constants.SLIMES_DATA.default,
         currentlyPlayingAt: process.env.CHANNEL_NAME,
       }
     };
@@ -70,12 +66,23 @@ app.post('/join', async (req, res) => {
   }
 
   slime.Item.username = username;
+  slime.Item.biome = Constants.BIOMES.default;
 
   io.emit('join', slime.Item);
 
   SLIMES_CACHE.push(slime.Item);
 
   res.send('a user has joined');
+});
+
+app.post('/exit', async (req, res) => {
+  const { username } = req.body;
+
+  SLIMES_CACHE.splice(SLIMES_CACHE.findIndex(slime => slime.username === username), 1);
+
+  io.emit('exit', { username });
+
+  res.send('a user has leave');
 });
 
 app.post('/chatBalloon', (req, res) => {
