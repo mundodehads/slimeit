@@ -2,6 +2,12 @@ const DynamoDB = require('aws-sdk/clients/dynamodb');
 const dynamo = new DynamoDB.DocumentClient({ region: 'us-east-1' });
 
 module.exports = {
+  randomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  },
+
   dynamoPut(params) {
     return new Promise((resolve, reject) => {
       dynamo.put(params, (err, data) => {

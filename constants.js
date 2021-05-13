@@ -1,17 +1,31 @@
 module.exports = {
+  EXP_TIMER: 10, // segundos
   SLIMES_DATA: {
     get default() {
       return {
-        race: this.RACES.default,
+        race: 'normal',
         experience: 0,
-        level: 0
+        nutrients: {},
       };
     },
+  },
+  MULTIPLIER: {
+    lounge: {
+      expMultiplier: 1,
+    },
+    forest: {
+      expMultiplier: 1.1,
+    },
+  },
+  NUTRIENTS: {
+    lounge: [],
+    forest: ['grass', 'earth'],
   },
   BIOMES: {
     get default() {
       return this.lounge;
     },
+    available: ['lounge', 'forest'],
     lounge: 'lounge',
     forest: 'forest',
   },
