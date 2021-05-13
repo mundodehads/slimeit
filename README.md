@@ -20,11 +20,14 @@ Slime It! is a slime based game to play wit twitch chat, each chat user can join
 - [ ] Seguwuk: each slime has an unique attribute (strenghs/weaks), considering futures battles between slimes
 - [ ] LncPedro: when the host gets a raid, show raid members as new slimes on screen!
 - [ ] LuckLucky: Balloon should have a maximum amount and fade with time
+- [ ] Enigma_Hall: Monster on biomes that slimes can fight!
+- [ ] Enigma_Hall: Biomes skin based on streamer slime!
+- [ ] LncPedro: Random biomes to straemers integration
 
 ## Streamer Ideas
-- [ ] Chat balloon skins
 - [ ] randon evolving based on evolving tree
 - [ ] IA to evolving trees to generate new races
+- [ ] Chat balloon skins
 
 ## Database Scheme
 
