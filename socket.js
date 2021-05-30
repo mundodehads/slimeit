@@ -51,7 +51,7 @@ function checkEvolve(username) {
 
     if (evolveTo.length) {
       const evolveToNewRace = evolveTo[Utils.randomNumber(0, evolveTo.length - 1)];
-      
+
       io.emit('evolve', { username, race: evolveToNewRace });
 
       SLIMES_CACHE[username].slimeData.race = evolveToNewRace;
@@ -62,7 +62,7 @@ function checkEvolve(username) {
 function initExp(username, biome) {
   SLIMES_CACHE[username].expInterval = setInterval(() => {
     SLIMES_CACHE[username].slimeData.experience += Constants.EXP_TIMER * Constants.MULTIPLIER[biome].expMultiplier;
-    
+
     for (const nutrient of Constants.NUTRIENTS[biome]) {
       if (!SLIMES_CACHE[username].slimeData.nutrients[nutrient]) {
         SLIMES_CACHE[username].slimeData.nutrients[nutrient] = 0;
@@ -131,7 +131,7 @@ app.post('/join', async (req, res) => {
   io.emit('join', slime.Item);
 
   SLIMES_CACHE[username] = slime.Item;
-  
+
   res.send(JSON.stringify(slime.Item));
 
   initExp(slime.Item.username, slime.Item.biome);
@@ -169,7 +169,7 @@ app.post('/stats', async (req, res) => {
 
 app.post('/chatBalloon', (req, res) => {
   const { username, message } = req.body;
-  
+
   io.emit('chatBalloon', { username, message });
 
   res.send('a user chat ballon has been created');
@@ -183,7 +183,7 @@ io.on('connection', (socket) => {
   for(const slime of Object.keys(SLIMES_CACHE)) {
     io.emit('join', SLIMES_CACHE[slime]);
   }
-  
+
   socket.on('disconnect', () => {
     console.log('a connection has been lost');
   });
@@ -195,4 +195,4 @@ server.listen(3000, () => {
   console.log('listening on *:3000');
 });
 
-initSync();
+//  initSync();
