@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "bot": "node bot.js",
+    "new_bot": "node new_bot.js",
     "socket": "node socket.js",
     "ws": "node websocket.js"
   },
