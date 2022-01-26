@@ -1,0 +1,21 @@
+{
+  "name": "slime-twitch-game",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "bot": "node bot.js",
+    "new_bot": "node new_bot.js",
+    "socket": "node socket.js",
+    "ws": "node websocket.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.904.0",
+    "axios": "^0.21.1",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "socket.io": "^4.1.0",
+    "tmi.js": "^1.8.3",
+    "ws": "^7.4.6"
+  }
+}
