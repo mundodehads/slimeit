@@ -1,4 +1,4 @@
-const join = async (client, { context, target, cache, ws }) => {
+const join = async ({ client, context, target, cache, ws }) => {
   if (cache.checkKey(context.username)) {
     client.say(target, `${context.username}, you already joined the session!`);
     return;

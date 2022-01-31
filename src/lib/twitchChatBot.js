@@ -1,12 +1,14 @@
 import tmi from 'tmi.js';
 import { Socket } from 'net';
-import { join, defaultCommand } from '../commands';
+import { join, showme, exit, chatMessage, defaultCommand } from '../commands';
 import { LocalCache } from '../utils';
 
 const SLIMES_CACHE = new LocalCache();
 
 const COMMANDS = {
   '!join': join,
+  '!showme': showme,
+  '!exit': exit,
   default: defaultCommand,
 };
 
@@ -28,9 +30,11 @@ const onMessageHandler = async (target, context, message, self) => {
 
   try {
     if (messageSplited[0][0] === '!') {
-      await (COMMANDS[messageSplited[0]] || COMMANDS.default)(client, { target, context, message, self, commands: messageSplited, cache: SLIMES_CACHE, ws });
+      await (COMMANDS[messageSplited[0]] || COMMANDS.default)({ client, target, context, message, self, commands: messageSplited, cache: SLIMES_CACHE, ws });
       return;
     }
+
+    await chatMessage({ context, ws, message });
   } catch (error) {
     console.log(error);
     return;
